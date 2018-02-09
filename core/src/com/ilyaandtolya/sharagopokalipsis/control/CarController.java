@@ -17,37 +17,42 @@ public class CarController {
     private float rotationSpeed = 30f;
     public void handle() {
         //все что связано со скоростью
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {//скорость при нажатой стрелочке вверх
             carSpeed += speedVelocity * GameScreen.deltaCff;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {//скорость при нажатии стрелочки вниз
             carSpeed -= speedVelocity * GameScreen.deltaCff;
-        } else {
-            downSpeed();
+        }else {
+            downSpeed();//снижение скорости когда клавиша не нажата
         }
-            carSpeed = sliceSpeed();
+        //ограничение скорости
+        System.out.println(carSpeed);
+        carSpeed = sliceSpeed();
         //
 
-
         //все что связано с поворотом
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){//влево
             carBounds.rotate(rotationSpeed * carSpeed * GameScreen.deltaCff);
-        }else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        }else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){//вправо
             carBounds.rotate(-rotationSpeed * carSpeed * GameScreen.deltaCff);
         }
 
-            carBounds.setPosition(carBounds.getX() + MathUtils.sinDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff,
-                    carBounds.getY() + MathUtils.cosDeg(carBounds.getRotation() - 90) * carSpeed * GameScreen.deltaCff);
+            carBounds.setPosition(carBounds.getX() + (MathUtils.sinDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff),
+                    carBounds.getY() + (MathUtils.cosDeg(carBounds.getRotation() - 90) * carSpeed * GameScreen.deltaCff));
 
     }
 
     private void downSpeed(){ //уменьшение скорости при не нажатых клавишах
-           if(carSpeed > speedVelocity * GameScreen.deltaCff){
-               carSpeed -= speedVelocity * GameScreen.deltaCff;
-           }else if (carSpeed < speedVelocity * GameScreen.deltaCff){
-               carSpeed += speedVelocity * GameScreen.deltaCff;
-           }else{
-               carSpeed =0f;
-           }
+        /*if ((carSpeed <= GameScreen.deltaCff) || (carSpeed >= -GameScreen.deltaCff)){
+               carSpeed  = 0;
+           }else*/
+        if(carSpeed < speedVelocity * GameScreen.deltaCff){
+               carSpeed += speedVelocity * GameScreen.deltaCff + 0.1f;
+        }else if (carSpeed > speedVelocity * GameScreen.deltaCff){
+            carSpeed -= speedVelocity * GameScreen.deltaCff - 0.1f;
+        }else if ((carSpeed >= -0.2f) || (carSpeed <= 0.2f)){
+            carSpeed = 0;
+        }
+
     }
 
     private float sliceSpeed(){ //ограничение скорости

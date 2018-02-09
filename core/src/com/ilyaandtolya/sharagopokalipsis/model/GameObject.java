@@ -19,7 +19,7 @@ abstract class GameObject {
 
         bounds = new Polygon(new float[]{0f,0f, width,0f,width, heith, 0f, heith});
         bounds.setPosition(x,y);
-        bounds.setOrigin(width/2f,heith/2f);
+        bounds.setOrigin(width / 2f ,heith / 2f);
     }
     public void draw(SpriteBatch batch){
         object.setPosition(bounds.getX(), bounds.getY());
