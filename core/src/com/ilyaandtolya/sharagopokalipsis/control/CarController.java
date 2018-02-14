@@ -13,19 +13,20 @@ public class CarController {
         this.carBounds = carBounds;
     }
 
-    private float carSpeed, speedVelocity = 10f, speedMax = 10f;
+    private float carSpeed, speedVelocity = 2f, speedMax = 10f;
     private float rotationSpeed = 30f;
+//    static final lamda_dlya_controller = GameScreen.deltaCff;
     public void handle() {
         //все что связано со скоростью
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {//скорость при нажатой стрелочке вверх
-            carSpeed += speedVelocity * GameScreen.deltaCff;
+            carSpeed += speedVelocity  * GameScreen.deltaCff;
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {//скорость при нажатии стрелочки вниз
             carSpeed -= speedVelocity * GameScreen.deltaCff;
         }else {
             downSpeed();//снижение скорости когда клавиша не нажата
+
         }
         //ограничение скорости
-        System.out.println(carSpeed);
         carSpeed = sliceSpeed();
         //
 
@@ -36,21 +37,21 @@ public class CarController {
             carBounds.rotate(-rotationSpeed * carSpeed * GameScreen.deltaCff);
         }
 
-            carBounds.setPosition(carBounds.getX() + (MathUtils.sinDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff),
+        carBounds.setPosition(carBounds.getX() + (MathUtils.sinDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff),
                     carBounds.getY() + (MathUtils.cosDeg(carBounds.getRotation() - 90) * carSpeed * GameScreen.deltaCff));
 
     }
 
     private void downSpeed(){ //уменьшение скорости при не нажатых клавишах
-        /*if ((carSpeed <= GameScreen.deltaCff) || (carSpeed >= -GameScreen.deltaCff)){
-               carSpeed  = 0;
-           }else*/
         if(carSpeed < speedVelocity * GameScreen.deltaCff){
-               carSpeed += speedVelocity * GameScreen.deltaCff + 0.1f;
+               carSpeed += speedVelocity;
+
         }else if (carSpeed > speedVelocity * GameScreen.deltaCff){
-            carSpeed -= speedVelocity * GameScreen.deltaCff - 0.1f;
-        }else if ((carSpeed >= -0.2f) || (carSpeed <= 0.2f)){
+            carSpeed -= speedVelocity ;
+
+        }{
             carSpeed = 0;
+            System.out.println(carSpeed);
         }
 
     }
@@ -58,7 +59,7 @@ public class CarController {
     private float sliceSpeed(){ //ограничение скорости
       if (carSpeed > speedMax){
           return speedMax;
-      }else if (carSpeed < - speedMax){
+      }else if (carSpeed  < - speedMax ){
           return -speedMax;
       }
 
