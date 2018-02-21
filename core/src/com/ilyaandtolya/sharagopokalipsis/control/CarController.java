@@ -7,62 +7,56 @@ import com.badlogic.gdx.math.Polygon;
 import com.ilyaandtolya.sharagopokalipsis.view.GameScreen;
 
 public class CarController {
-    private Polygon carBounds;
+    private float carSpeed, speedVelocity = 10f, speedMax = 10f;
+    private float rotationSpeed = 30f;
 
-    public CarController(Polygon carBounds){
+    private Polygon carBounds;
+    public CarController(Polygon carBounds) {
         this.carBounds = carBounds;
     }
 
-    private float carSpeed, speedVelocity = 2f, speedMax = 10f;
-    private float rotationSpeed = 30f;
-//    static final lamda_dlya_controller = GameScreen.deltaCff;
-    public void handle() {
-        //все что связано со скоростью
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {//скорость при нажатой стрелочке вверх
-            carSpeed += speedVelocity  * GameScreen.deltaCff;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {//скорость при нажатии стрелочки вниз
-            carSpeed -= speedVelocity * GameScreen.deltaCff;
-        }else {
-            downSpeed();//снижение скорости когда клавиша не нажата
 
-        }
-        //ограничение скорости
+    public void handle(){
+        //всё, что связано со скоростью
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
+            carSpeed += speedVelocity * GameScreen.deltaCff;
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            carSpeed -= speedVelocity * GameScreen.deltaCff;
+        else
+            downSpeed();
         carSpeed = sliceSpeed();
         //
 
-        //все что связано с поворотом
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){//влево
+        //всё, что связано с поворотом
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
             carBounds.rotate(rotationSpeed * carSpeed * GameScreen.deltaCff);
-        }else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){//вправо
+        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             carBounds.rotate(-rotationSpeed * carSpeed * GameScreen.deltaCff);
-        }
+        ///
 
-        carBounds.setPosition(carBounds.getX() + (MathUtils.sinDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff),
-                    carBounds.getY() + (MathUtils.cosDeg(carBounds.getRotation() - 90) * carSpeed * GameScreen.deltaCff));
 
-    }
-
-    private void downSpeed(){ //уменьшение скорости при не нажатых клавишах
-        if(carSpeed < speedVelocity * GameScreen.deltaCff){
-               carSpeed += speedVelocity;
-
-        }else if (carSpeed > speedVelocity * GameScreen.deltaCff){
-            carSpeed -= speedVelocity ;
-
-        }{
-            carSpeed = 0;
-            System.out.println(carSpeed);
-        }
+        carBounds.setPosition(carBounds.getX() + MathUtils.sinDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff,
+                carBounds.getY() + MathUtils.cosDeg(carBounds.getRotation() - 90) * carSpeed * GameScreen.deltaCff);
 
     }
-
-    private float sliceSpeed(){ //ограничение скорости
-      if (carSpeed > speedMax){
-          return speedMax;
-      }else if (carSpeed  < - speedMax ){
-          return -speedMax;
-      }
-
-      return carSpeed;
+    //СНИЖЕНИЕ СКОРОСТИ ЕСЛИ КОАВИША НЕ НАЖАТА
+    private void downSpeed(){
+        if (carSpeed > speedVelocity * GameScreen.deltaCff)
+            carSpeed -= speedVelocity * GameScreen.deltaCff;
+        else if (carSpeed < -speedVelocity * GameScreen.deltaCff)
+            carSpeed += speedVelocity * GameScreen.deltaCff;
+        else
+            carSpeed = 0f;
     }
+    //ОГРАНИЧЕНИЕ СКОРОСТИ
+    private float sliceSpeed(){
+        if (carSpeed > speedMax)
+            return speedMax;
+        if (carSpeed < -speedMax)
+            return -speedMax;
+        return carSpeed;
+    }
+
+
+
 }
