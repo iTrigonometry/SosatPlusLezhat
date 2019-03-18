@@ -6,21 +6,27 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.ilyaandtolya.sharagopokalipsis.model.Car;
 
 public class GameScreen implements Screen {
 
     private Texture carTexture;
+    private TextureAtlas textureAtlas;
     private SpriteBatch batch;
     private Car car;
     private OrthographicCamera camera;
 
     public static float deltaCff;
 
+    public void setTextureAtlas(TextureAtlas textureAtlas) {
+        this.textureAtlas = textureAtlas;
+    }
+
     @Override
     public void show() {
        batch = new SpriteBatch();
-       carTexture = new Texture(Gdx.files.internal("download.png"));
+       carTexture = new Texture(Gdx.files.internal("core/assets/download.png"));
        carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
        car = new Car(carTexture,0,0,0.7f * 2, 0.7f);
     }

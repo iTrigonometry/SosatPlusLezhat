@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.ilyaandtolya.sharagopokalipsis.view.GameScreen;
 
 public class CarController {
-    private float carSpeed, speedVelocity = 10f, speedMax = 10f;
+    private float carSpeed, speedVelocity = 1f, speedMax = 25f;
     private float rotationSpeed = 30f;
 
     private Polygon carBounds;
